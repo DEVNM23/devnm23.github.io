@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DEVNM Development - Latest articles and insights on web development and technology">
+    <title>Blog | DEVNM Development</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👨‍💻</text></svg>">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .blog-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .blog-posts {
+            display: grid;
+            gap: 2rem;
+        }
+        
+        .blog-card {
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .blog-content {
+            padding: 1.5rem;
+        }
+        
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+        }
+        
+        .blog-meta span {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+        }
+        
+        .blog-meta i {
+            margin-right: 0.5rem;
+            color: var(--accent-color);
+        }
+        
+        .blog-title {
+            margin: 0 0 1rem 0;
+            font-size: 1.5rem;
+        }
+        
+        .blog-title a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .blog-title a:hover {
+            color: var(--accent-color);
+        }
+        
+        .blog-excerpt {
+            margin-bottom: 1.5rem;
+            color: var(--secondary-text);
+            line-height: 1.6;
+        }
+        
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .read-more i {
+            margin-left: 0.5rem;
+            transition: var(--transition);
+        }
+        
+        .read-more:hover {
+            color: var(--text-color);
+        }
+        
+        .read-more:hover i {
+            transform: translateX(3px);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+            gap: 0.5rem;
+        }
+        
+        .pagination a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            background: var(--secondary-bg);
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .pagination a:hover, .pagination a.active {
+            background: var(--accent-color);
+            color: var(--bg-color);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .sidebar-widget {
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .widget-title {
+            position: relative;
+            margin: 0 0 1.5rem 0;
+            padding-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+        
+        .widget-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-color);
+        }
+        
+        .search-form {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        
+        .search-button {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--secondary-text);
+            cursor: pointer;
+        }
+        
+        .categories-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .categories-list li {
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .categories-list a {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .categories-list a:hover {
+            color: var(--accent-color);
+        }
+        
+        .categories-list span {
+            background: var(--bg-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+        
+        .recent-posts {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .recent-post {
+            display: flex;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .recent-post:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .recent-post-image {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 1rem;
+        }
+        
+        .recent-post-content h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .recent-post-content a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .recent-post-content a:hover {
+            color: var(--accent-color);
+        }
+        
+        .recent-post-date {
+            font-size: 0.8rem;
+            color: var(--secondary-text);
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--bg-color);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .tag:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+        }
+        
+        @media (max-width: 992px) {
+            .blog-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                margin-top: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">DEVNM<span class="accent">.</span></a>
+            <div class="nav-toggle" id="navToggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="groepen.html">Projects</a></li>
+                <li><a href="members.html">Network</a></li>
+                <li><a href="meldingen.html">Notifications</a></li>
+                <li><a href="file-share.html">File Share</a></li>
+                <li><a href="online-boeken.html">Book Online</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>Blog</h1>
+            <p>Latest articles and insights on web development and technology</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="content-section">
+        <div class="container">
+            <div class="blog-container">
+                <div class="blog-posts">
+                    <!-- Blog Post 1 -->
+                    <article class="blog-card">
+                        <img src="https://source.unsplash.com/random/800x400/?web-development" alt="Web Development" class="blog-image">
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar"></i> June 15, 2025</span>
+                                <span><i class="far fa-folder"></i> Web Development</span>
+                                <span><i class="far fa-comment"></i> 5 Comments</span>
+                            </div>
+                            <h2 class="blog-title"><a href="#">10 Essential Tools for Modern Web Developers in 2025</a></h2>
+                            <p class="blog-excerpt">Discover the must-have tools and technologies that every web developer should be familiar with to stay ahead in the rapidly evolving tech landscape of 2025.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    
+                    <!-- Blog Post 2 -->
+                    <article class="blog-card">
+                        <img src="https://source.unsplash.com/random/800x400/?programming" alt="Programming" class="blog-image">
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar"></i> June 10, 2025</span>
+                                <span><i class="far fa-folder"></i> Programming</span>
+                                <span><i class="far fa-comment"></i> 3 Comments</span>
+                            </div>
+                            <h2 class="blog-title"><a href="#">The Future of JavaScript: What's New in ES2025</a></h2>
+                            <p class="blog-excerpt">Explore the latest features and enhancements coming to JavaScript in ES2025 and how they can make your code more efficient and readable.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    
+                    <!-- Blog Post 3 -->
+                    <article class="blog-card">
+                        <img src="https://source.unsplash.com/random/800x400/?design" alt="UI/UX Design" class="blog-image">
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="far fa-calendar"></i> June 5, 2025</span>
+                                <span><i class="far fa-folder"></i> UI/UX Design</span>
+                                <span><i class="far fa-comment"></i> 8 Comments</span>
+                            </div>
+                            <h2 class="blog-title"><a href="#">Designing for Accessibility: A Comprehensive Guide</a></h2>
+                            <p class="blog-excerpt">Learn the principles of accessible design and how to create digital experiences that are inclusive for all users, regardless of their abilities.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <a href="#" class="active">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#"><i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Search Widget -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">Search</h3>
+                        <form class="search-form">
+                            <input type="text" class="search-input" placeholder="Search...">
+                            <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+                    
+                    <!-- Categories Widget -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">Categories</h3>
+                        <ul class="categories-list">
+                            <li><a href="#">Web Development <span>8</span></a></li>
+                            <li><a href="#">Programming <span>12</span></a></li>
+                            <li><a href="#">UI/UX Design <span>5</span></a></li>
+                            <li><a href="#">Mobile Apps <span>7</span></a></li>
+                            <li><a href="#">Technology <span>15</span></a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Recent Posts Widget -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">Recent Posts</h3>
+                        <ul class="recent-posts">
+                            <li class="recent-post">
+                                <img src="https://source.unsplash.com/random/100x80/?code" alt="Recent Post" class="recent-post-image">
+                                <div class="recent-post-content">
+                                    <h4><a href="#">10 Essential Tools for Modern Web Developers in 2025</a></h4>
+                                    <div class="recent-post-date">June 15, 2025</div>
+                                </div>
+                            </li>
+                            <li class="recent-post">
+                                <img src="https://source.unsplash.com/random/100x80/?javascript" alt="Recent Post" class="recent-post-image">
+                                <div class="recent-post-content">
+                                    <h4><a href="#">The Future of JavaScript: What's New in ES2025</a></h4>
+                                    <div class="recent-post-date">June 10, 2025</div>
+                                </div>
+                            </li>
+                            <li class="recent-post">
+                                <img src="https://source.unsplash.com/random/100x80/?design" alt="Recent Post" class="recent-post-image">
+                                <div class="recent-post-content">
+                                    <h4><a href="#">Designing for Accessibility: A Comprehensive Guide</a></h4>
+                                    <div class="recent-post-date">June 5, 2025</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Tags Widget -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">Popular Tags</h3>
+                        <div class="tags">
+                            <a href="#" class="tag">#webdev</a>
+                            <a href="#" class="tag">#javascript</a>
+                            <a href="#" class="tag">#react</a>
+                            <a href="#" class="tag">#uiux</a>
+                            <a href="#" class="tag">#css</a>
+                            <a href="#" class="tag">#html</a>
+                            <a href="#" class="tag">#programming</a>
+                            <a href="#" class="tag">#webdesign</a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Let's Build Something Amazing</h4>
+                    <div class="social-links">
+                        <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="mailto:hello@devnm.dev" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>Designed & Built by Ninian</p>
+                    <p class="copyright">&copy; 2025 DEVNM Development. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Mobile menu toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on a nav link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
