@@ -48,11 +48,29 @@ navLinks.forEach(link => {
 // Add scroll animation
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
     if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+        navbar.classList.add('scrolled');
     } else {
-        navbar.style.background = '#fff';
-        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+        navbar.classList.remove('scrolled');
     }
 });
+
+// Improve accessibility: close mobile menu with Escape
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu && navMenu.classList.contains('active')) {
+        navMenu.classList.remove('active');
+        if (navToggle) navToggle.classList.remove('active');
+    }
+});
+
+// Add aria-expanded toggling for navToggle
+if (navToggle) {
+    navToggle.setAttribute('role', 'button');
+    navToggle.setAttribute('aria-label', 'Open navigation menu');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.addEventListener('click', () => {
+        const expanded = navToggle.classList.contains('active');
+        navToggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+}

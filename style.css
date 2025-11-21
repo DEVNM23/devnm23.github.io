@@ -10,6 +10,10 @@
     --transition: all 0.3s ease;
     --code-bg: #0a192f;
     --code-text: #64ffda;
+    /* missing palette vars used elsewhere */
+    --white: #ffffff;
+    --primary-color: var(--accent-color);
+    --secondary-color: var(--secondary-text);
 }
 
 * {
@@ -112,7 +116,7 @@ a:hover {
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--accent-color);
     font-family: 'Fira Code', monospace;
@@ -122,10 +126,11 @@ a:hover {
 .nav-menu {
     display: flex;
     list-style: none;
+    align-items: center;
 }
 
 .nav-menu li {
-    margin-left: 30px;
+    margin-left: 20px;
 }
 
 .nav-menu a {
@@ -133,8 +138,8 @@ a:hover {
     position: relative;
     color: var(--primary-text);
     font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
+    font-size: 0.88rem;
+    padding: 0.3rem 0.6rem;
 }
 
 .nav-menu a:after {
@@ -346,7 +351,7 @@ a:hover {
     display: block;
     width: 25px;
     height: 3px;
-    background-color: var(--primary-color);
+    background-color: var(--accent-color);
     margin: 5px 0;
     transition: var(--transition);
 }
@@ -388,24 +393,27 @@ html {
 
     .nav-menu {
         position: fixed;
-        left: -100%;
-        top: 70px;
+        left: 0;
+        transform: translateX(-110%);
+        top: 60px;
         gap: 0;
         flex-direction: column;
-        background-color: var(--white);
+        background-color: rgba(10,25,47,0.98);
+        color: var(--primary-text);
         width: 100%;
         text-align: center;
-        transition: 0.3s;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        padding: 20px 0;
+        transition: transform 0.28s ease;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+        padding: 18px 0;
+        z-index: 1100;
     }
 
     .nav-menu.active {
-        left: 0;
+        transform: translateX(0);
     }
 
     .nav-menu li {
-        margin: 16px 0;
+        margin: 12px 0;
     }
 
     .hero-content h1 {
@@ -414,5 +422,79 @@ html {
 
     .hero-content p {
         font-size: 1.2rem;
+    }
+}
+
+/* Navbar scrolled state */
+.navbar {
+    transition: background 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease;
+}
+
+.navbar.scrolled {
+    background: rgba(10, 25, 47, 0.98);
+    box-shadow: 0 6px 22px rgba(2,12,27,0.6);
+    padding: 8px 0;
+}
+
+/* Compact desktop tweaks */
+@media (min-width: 769px) {
+    .navbar .container { padding: 8px 0; }
+    .nav-menu a { padding: 0.25rem 0.5rem; }
+}
+
+/* Very small screens: icon-only bottom navigation for compactness */
+@media (max-width: 480px) {
+    /* Turn nav into a touch-friendly bottom bar */
+    .nav-menu {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: auto;
+        transform: translateY(0);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        background: rgba(10,25,47,0.98);
+        padding: 6px 6px;
+        box-shadow: 0 -6px 20px rgba(0,0,0,0.45);
+        z-index: 1200;
+    }
+
+    .nav-menu li {
+        margin: 0;
+        flex: 1 1 auto;
+    }
+
+    .nav-menu a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 4px;
+        font-size: 0.75rem;
+        color: var(--primary-text);
+    }
+
+    .nav-menu a::before {
+        content: attr(data-icon);
+        font-size: 1.25rem;
+        display: block;
+        margin-bottom: 4px;
+        line-height: 1;
+    }
+
+    .nav-menu a .link-text {
+        display: none;
+    }
+
+    /* Hide the top nav toggle (hamburger) when using bottom nav */
+    .nav-toggle {
+        display: none;
+    }
+
+    /* Add a little spacing to page content so bottom nav doesn't overlap */
+    .hero, .content-section, .projects-section, .about-section, .contact-section {
+        padding-bottom: 76px; /* ensures main content isn't hidden behind bottom nav */
     }
 }
